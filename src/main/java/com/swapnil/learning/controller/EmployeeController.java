@@ -3,7 +3,6 @@
  */
 package com.swapnil.learning.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,14 +31,15 @@ import com.swapnil.learning.repository.EmployeeRepository;
  */
 @RestController
 @RequestMapping(path="/employees")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
 
 	@Autowired
     private EmployeeRepository employeeRepository;
 	
 	@GetMapping
-	public List<Employee> getAllEmployees() {
-		return employeeRepository.findAll();
+	public ResponseEntity<List<Employee>> getAllEmployees() {
+		return ResponseEntity.ok().body(employeeRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
@@ -51,6 +52,7 @@ public class EmployeeController {
 
     @PostMapping
     public Employee createEmployee(@Valid @RequestBody Employee employee) {
+    	System.out.println("***********POST "+employee.getEmployeeFirstName());
         return employeeRepository.save(employee);
     }
 
