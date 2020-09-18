@@ -11,6 +11,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,11 @@ public class EmployeeController {
 	@Autowired
     private EmployeeRepository employeeRepository;
 	
+	 @GetMapping("/welcome")
+	    public String welcomeUser(@AuthenticationPrincipal OidcUser user) {
+	    	return "Welcome Mr."+user.getFullName();
+	    }
+	 
 	@GetMapping
 	public ResponseEntity<List<Employee>> getAllEmployees() {
 		return ResponseEntity.ok().body(employeeRepository.findAll());
